@@ -1,0 +1,8 @@
+### Login to get JWT
+POST http://localhost:8080/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "example@student.com",
+  "password": "YourPassword123"
+}
