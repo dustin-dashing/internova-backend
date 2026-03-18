@@ -1,8 +1,203 @@
-### Login to get JWT
-POST http://localhost:8080/api/v1/auth/login
+### Internova Backend API Test Suite
+### Base URL: https://internova-backend-production.up.railway.app
+
+### =============================================================================
+### AUTHENTICATION ENDPOINTS
+### =============================================================================
+
+### Register a new user
+POST https://internova-backend-production.up.railway.app/api/v1/auth/register
 Content-Type: application/json
 
 {
-  "email": "example@student.com",
-  "password": "YourPassword123"
+  "email": "student@example.com",
+  "password": "Password123!",
+  "role": "STUDENT",
+  "firstName": "John",
+  "lastName": "Doe",
+  "departmentId": "uuid-here"
 }
+
+### Login
+POST https://internova-backend-production.up.railway.app/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "student@example.com",
+  "password": "Password123!"
+}
+
+### Get current user profile
+GET https://internova-backend-production.up.railway.app/api/v1/auth/me
+Cookie: JWT=your-jwt-token-here
+
+### Refresh token
+POST https://internova-backend-production.up.railway.app/api/v1/auth/refresh
+Cookie: JWT=your-jwt-token-here
+
+### Logout
+POST https://internova-backend-production.up.railway.app/api/v1/auth/logout
+Cookie: JWT=your-jwt-token-here
+
+### =============================================================================
+### STUDENT ENDPOINTS
+### =============================================================================
+
+### Get student profile
+GET https://internova-backend-production.up.railway.app/api/v1/students/profile
+Cookie: JWT=your-jwt-token-here
+
+### Update student profile
+PUT https://internova-backend-production.up.railway.app/api/v1/students/profile
+Content-Type: application/json
+Cookie: JWT=your-jwt-token-here
+
+{
+  "course": "Computer Science",
+  "cvUrl": "https://example.com/cv.pdf"
+}
+
+### Get profile completion
+GET https://internova-backend-production.up.railway.app/api/v1/students/profile-completion
+Cookie: JWT=your-jwt-token-here
+
+### =============================================================================
+### VACANCY ENDPOINTS
+### =============================================================================
+
+### Get all vacancies (public)
+GET https://internova-backend-production.up.railway.app/api/v1/vacancies?page=0&size=10
+
+### Get vacancy by ID
+GET https://internova-backend-production.up.railway.app/api/v1/vacancies/{vacancy-id}
+
+### Search vacancies
+GET https://internova-backend-production.up.railway.app/api/v1/vacancies/search?keyword=developer&page=0&size=10
+
+### Get vacancy feed for department (student only)
+GET https://internova-backend-production.up.railway.app/api/v1/vacancies/feed/{department-id}
+Cookie: JWT=your-jwt-token-here
+
+### Post new vacancy (company only)
+POST https://internova-backend-production.up.railway.app/api/v1/vacancies
+Content-Type: application/json
+Cookie: JWT=your-jwt-token-here
+
+{
+  "title": "Software Developer Intern",
+  "description": "Great opportunity for students",
+  "requirements": "Java, Spring Boot experience"
+}
+
+### Update vacancy (company owner only)
+PUT https://internova-backend-production.up.railway.app/api/v1/vacancies/{vacancy-id}
+Content-Type: application/json
+Cookie: JWT=your-jwt-token-here
+
+{
+  "title": "Updated Title",
+  "description": "Updated description",
+  "requirements": "Updated requirements"
+}
+
+### =============================================================================
+### APPLICATION ENDPOINTS
+### =============================================================================
+
+### Apply to vacancy (student only)
+POST https://internova-backend-production.up.railway.app/api/v1/applications
+Content-Type: application/json
+Cookie: JWT=your-jwt-token-here
+
+{
+  "vacancyId": "vacancy-uuid-here"
+}
+
+### Get my applications (student only)
+GET https://internova-backend-production.up.railway.app/api/v1/applications?page=0&size=10
+Cookie: JWT=your-jwt-token-here
+
+### Get application by ID (student only)
+GET https://internova-backend-production.up.railway.app/api/v1/applications/{application-id}
+Cookie: JWT=your-jwt-token-here
+
+### Withdraw application (student only)
+DELETE https://internova-backend-production.up.railway.app/api/v1/applications/{application-id}
+Cookie: JWT=your-jwt-token-here
+
+### Update application status (company/admin only)
+PATCH https://internova-backend-production.up.railway.app/api/v1/applications/{application-id}/status?status=INTERVIEW
+Cookie: JWT=your-jwt-token-here
+
+### =============================================================================
+### COMPANY ENDPOINTS
+### =============================================================================
+
+### Get company profile
+GET https://internova-backend-production.up.railway.app/api/v1/company/profile
+Cookie: JWT=your-jwt-token-here
+
+### Get company vacancies
+GET https://internova-backend-production.up.railway.app/api/v1/company/vacancies
+Cookie: JWT=your-jwt-token-here
+
+### Get verification status
+GET https://internova-backend-production.up.railway.app/api/v1/company/verification-status
+Cookie: JWT=your-jwt-token-here
+
+### =============================================================================
+### LOGBOOK ENDPOINTS
+### =============================================================================
+
+### Submit log entry (student only)
+POST https://internova-backend-production.up.railway.app/api/v1/logbooks/submit?date=2024-03-19
+Content-Type: application/json
+Cookie: JWT=your-jwt-token-here
+
+{
+  "content": "Worked on Spring Boot project, implemented authentication",
+  "tags": "spring-boot,authentication,java"
+}
+
+### Get my log entries (student only)
+GET https://internova-backend-production.up.railway.app/api/v1/logbooks/my-logs
+Cookie: JWT=your-jwt-token-here
+
+### =============================================================================
+### NOTIFICATION ENDPOINTS
+### =============================================================================
+
+### Get my notifications
+GET https://internova-backend-production.up.railway.app/api/v1/notifications?page=0&size=10
+Cookie: JWT=your-jwt-token-here
+
+### Get unread count
+GET https://internova-backend-production.up.railway.app/api/v1/notifications/unread/count
+Cookie: JWT=your-jwt-token-here
+
+### Mark notification as read
+PATCH https://internova-backend-production.up.railway.app/api/v1/notifications/{notification-id}/read
+Cookie: JWT=your-jwt-token-here
+
+### Mark all notifications as read
+PATCH https://internova-backend-production.up.railway.app/api/v1/notifications/read-all
+Cookie: JWT=your-jwt-token-here
+
+### =============================================================================
+### HEALTH CHECK ENDPOINTS
+### =============================================================================
+
+### Application health check
+GET https://internova-backend-production.up.railway.app/actuator/health
+
+### Application info
+GET https://internova-backend-production.up.railway.app/actuator/info
+
+### =============================================================================
+### TESTING INSTRUCTIONS
+### =============================================================================
+# 1. Start with authentication endpoints (register/login)
+# 2. Use the JWT token from login response in Cookie header for authenticated requests
+# 3. Test public endpoints first (vacancy listing)
+# 4. Test role-specific endpoints based on user type
+# 5. Check actuator endpoints for application health
